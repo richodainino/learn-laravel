@@ -2,15 +2,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tudu App</title>
+    <script type="text/javascript" src="{{ asset('assets/vendor/ckeditor5/build/ckeditor.js') }}"></script>
+    <title>CKE5 in Laravel</title>
 </head>
 <body>
-    <h1>What would you like Tudu?</h1>
+    <h1>Classic editor</h1>
     <form action="/articles" method="post">
         @csrf
-        <input type="text" name="name" id="name" required>
-        <input type="submit" value="Add">
+        <textarea name="content" id="editor">
+            &lt;p&gt;This is some sample content.&lt;/p&gt;
+        </textarea>
+        <p><input type="submit" value="Submit"></p>
     </form>
+    
+    @push('scripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+    @endpush
+
+    @stack('scripts')
 </body>
 </html>

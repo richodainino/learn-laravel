@@ -13,9 +13,7 @@ class ArticleController extends Controller
     {
         $articles = Article::all();
 
-        return view('articles', [
-            'articles' => $articles,
-        ]);
+        return view('articles', compact('articles'));
     }
 
     public function create(): View
@@ -25,13 +23,14 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        return 'store ' . $request->input('name');
+        return 'store ' . $request->input('content');
 
-        $article = new Article();
-        $article->name = $request->input('name');
-        $article->save();
+        Article::create([
+            'name' => $request->input('name'),
+            'content' => $request->input('content'),
+        ]);
 
-        return redirect('/articles');
+        return redirect()->route('articles.index')->with('message', 'Post Created Successfully');
     }    
 
     public function show(Request $request, $id)
@@ -51,7 +50,7 @@ class ArticleController extends Controller
         $article->name = $request->input('update-name');
         $article->save();
 
-        return redirect('/articles');
+        return redirect()->route('articles.index');
     }
 
     public function destroy(Request $request, $id)
@@ -61,6 +60,6 @@ class ArticleController extends Controller
         $article = Article::find($id);
         $article->destroy();
 
-        return redirect('/articles');
+        return redirect()->route('articles.index');
     }
 }
